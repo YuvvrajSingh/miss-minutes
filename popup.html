@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Miss Minutes - Focus To-Do</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <header class="header">
+        <div class="logo">
+          <img src="images/logo48.png" alt="Miss Minutes" class="logo-img" />
+          <h1>Miss Minutes</h1>
+        </div>
+        <button class="theme-toggle" id="themeToggle">🌙</button>
+      </header>
+
+      <!-- Navigation -->
+      <nav class="navigation">
+        <button class="nav-btn active" data-view="timer">🍅 Timer</button>
+        <button class="nav-btn" data-view="tasks">✅ Tasks</button>
+        <button class="nav-btn" data-view="analytics">📊 Stats</button>
+        <button class="nav-btn" id="settingsBtn">⚙️ Settings</button>
+      </nav>
+      <!-- Timer View -->
+      <div class="view active" id="timerView">
+        <section class="timer-section">
+          <div class="timer-display">
+            <div class="timer-circle">
+              <svg class="progress-ring" width="200" height="200">
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="85"
+                  stroke="var(--progress-bg)"
+                  stroke-width="8"
+                  fill="transparent"
+                  class="progress-ring__circle"
+                />
+                <circle
+                  cx="100"
+                  cy="100"
+                  r="85"
+                  stroke="var(--primary-color)"
+                  stroke-width="8"
+                  fill="transparent"
+                  stroke-linecap="round"
+                  class="progress-ring__progress"
+                  id="progressRing"
+                />
+              </svg>
+              <div class="timer-content">
+                <div class="timer-time" id="timerDisplay">25:00</div>
+                <div class="timer-mode" id="timerMode">Focus</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Timer Controls -->
+          <div class="timer-controls">
+            <button class="btn btn-primary" id="startPauseBtn">
+              <span id="startPauseIcon">▶️</span>
+              <span id="startPauseText">Start</span>
+            </button>
+            <button class="btn btn-secondary" id="resetBtn">
+              <span>🔄</span>
+              <span>Reset</span>
+            </button>
+          </div>
+
+          <!-- Timer Modes -->
+          <div class="timer-modes">
+            <button class="mode-btn active" data-mode="focus">🍅 Focus</button>
+            <button class="mode-btn" data-mode="shortBreak">
+              ☕ Short Break
+            </button>
+            <button class="mode-btn" data-mode="longBreak">
+              🏆 Long Break
+            </button>
+          </div>
+
+          <!-- White Noise Controls -->
+          <div class="white-noise-section">
+            <div class="white-noise-header">
+              <span class="white-noise-icon">🎵</span>
+              <label for="whiteNoiseSelect">White Noise</label>
+            </div>
+            <div class="white-noise-controls">
+              <select id="whiteNoiseSelect" class="white-noise-select">
+                <option value="none">None</option>
+                <option value="bgm_Classroom.m4a">Classroom</option>
+                <option value="bgm_CofficeShop.m4a">Coffee Shop</option>
+                <option value="bgm_FastTicking.m4a">Fast Ticking</option>
+                <option value="bgm_FireBurning.m4a">Fire Burning</option>
+                <option value="bgm_Library.m4a">Library</option>
+                <option value="bgm_Mute.m4a">Mute</option>
+                <option value="bgm_OceanShore.m4a">Ocean Shore</option>
+                <option value="bgm_Rain.m4a">Rain</option>
+                <option value="bgm_Stream.m4a">Stream</option>
+                <option value="bgm_Ticking.m4a">Ticking</option>
+                <option value="bgm_Wilderness.m4a">Wilderness</option>
+                <option value="bgm_WindThroughTrees.m4a">
+                  Wind Through Trees
+                </option>
+                <option value="bgm_WindWithCrickets.m4a">
+                  Wind With Crickets
+                </option>
+              </select>
+              <button
+                class="btn btn-small white-noise-toggle"
+                id="whiteNoiseToggle"
+              >
+                <span id="whiteNoiseIcon">🔇</span>
+              </button>
+            </div>
+            <div class="white-noise-volume">
+              <input
+                type="range"
+                id="whiteNoiseVolume"
+                class="volume-slider"
+                min="0"
+                max="100"
+                value="50"
+              />
+              <span class="volume-label" id="volumeLabel">50%</span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Tasks View -->
+      <div class="view" id="tasksView">
+        <section class="tasks-section">
+          <div class="tasks-header">
+            <h3>✅ Tasks</h3>
+            <button class="btn btn-small" id="addTaskBtn">+ Add Task</button>
+          </div>
+
+          <div class="add-task-form" id="addTaskForm" style="display: none">
+            <input
+              type="text"
+              id="taskInput"
+              placeholder="Enter a new task..."
+              maxlength="100"
+            />
+            <div class="form-actions">
+              <button class="btn btn-primary" id="saveTaskBtn">Save</button>
+              <button class="btn btn-secondary" id="cancelTaskBtn">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <div class="tasks-list" id="tasksList">
+            <div class="empty-state" id="emptyState">
+              <p>No tasks yet. Add one to get started! 🚀</p>
+            </div>
+          </div>
+        </section>
+      </div>
+      <!-- Analytics View -->
+      <div class="view" id="analyticsView">
+        <section class="analytics-section">
+          <h3>📊 Today's Progress</h3>
+          <div class="analytics-grid">
+            <div class="stat-card">
+              <div class="stat-number" id="todayFocus">0</div>
+              <div class="stat-label">Minutes Focused</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="todaySessions">0</div>
+              <div class="stat-label">Sessions Completed</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number" id="weekFocus">0</div>
+              <div class="stat-label">Week Total</div>
+            </div>
+          </div>
+        </section>
+        <section class="chart-section">
+          <h3>📈 Daily Focus Trend</h3>
+          <div class="chart-container">
+            <canvas id="focusChart" width="400" height="200"></canvas>
+            <div class="chart-legend">
+              <span class="legend-item">
+                <span
+                  class="legend-color"
+                  style="background-color: #4caf50"
+                ></span>
+                Minutes Focused
+              </span>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Settings Overlay -->
+      <div class="settings-overlay" id="settingsOverlay" style="display: none">
+        <div class="settings-panel">
+          <div class="settings-header">
+            <h3>⚙️ Settings</h3>
+            <button class="btn-close" id="closeSettings">✕</button>
+          </div>
+          <div class="settings-content">
+            <div class="setting-group">
+              <label>Focus Duration (min):</label>
+              <input
+                type="number"
+                id="focusDuration"
+                min="1"
+                max="120"
+                value="25"
+              />
+            </div>
+            <div class="setting-group">
+              <label>Short Break (min):</label>
+              <input
+                type="number"
+                id="shortBreakDuration"
+                min="1"
+                max="30"
+                value="5"
+              />
+            </div>
+            <div class="setting-group">
+              <label>Long Break (min):</label>
+              <input
+                type="number"
+                id="longBreakDuration"
+                min="1"
+                max="60"
+                value="15"
+              />
+            </div>
+            <div class="setting-group">
+              <label>
+                <input type="checkbox" id="autoStartBreaks" />
+                Auto-start breaks
+              </label>
+            </div>
+            <div class="setting-group">
+              <label>
+                <input type="checkbox" id="autoStartPomodoros" />
+                Auto-start pomodoros
+              </label>
+            </div>
+            <div class="setting-group">
+              <label>
+                <input type="checkbox" id="soundEnabled" checked />
+                Sound notifications
+              </label>
+            </div>
+            <div class="setting-group">
+              <label>
+                <input type="checkbox" id="notificationsEnabled" checked />
+                Browser notifications
+              </label>
+            </div>
+          </div>
+          <div class="settings-footer">
+            <button class="btn btn-primary" id="saveSettings">
+              Save Settings
+            </button>
+            <button class="btn btn-secondary" id="cancelSettings">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Audio Elements -->
+    <audio id="timerAudio" preload="auto">
+      <source src="audio/Complete.m4a" type="audio/mp4" />
+      <source src="audio/Complete.wav" type="audio/wav" />
+    </audio>
+
+    <!-- Scripts -->
+    <script src="timer.js"></script>
+    <script src="tasks.js"></script>
+    <script src="analytics.js"></script>
+    <script src="theme.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

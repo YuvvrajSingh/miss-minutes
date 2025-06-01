@@ -1,0 +1,29 @@
+{
+  "name": "miss-minutes",
+  "version": "1.0.0",
+  "description": "A productivity Chrome Extension combining a customizable Pomodoro timer with a to-do list and focus analytics",
+  "scripts": {
+    "build": "echo 'Extension is ready for distribution'",
+    "package": "powershell -Command \"Compress-Archive -Path * -DestinationPath ../miss-minutes.zip -Force\"",
+    "validate": "echo 'Run chrome://extensions in developer mode to validate'"
+  },
+  "keywords": [
+    "chrome-extension",
+    "pomodoro",
+    "productivity",
+    "timer",
+    "todo",
+    "focus",
+    "analytics"
+  ],
+  "author": "Miss Minutes Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[username]/miss-minutes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/[username]/miss-minutes/issues"
+  },
+  "homepage": "https://github.com/[username]/miss-minutes#readme"
+}
